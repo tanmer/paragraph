@@ -27,3 +27,15 @@
 .ce-paragraph p:last-of-type{
     margin-bottom: 0;
 }
+
+.ce-paragraph.align-left {
+  text-align: left;
+}
+
+.ce-paragraph.align-center {
+  text-align: center;
+}
+
+.ce-paragraph.align-right {
+  text-align: right;
+}
