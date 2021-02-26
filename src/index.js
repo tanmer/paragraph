@@ -87,9 +87,11 @@ class Paragraph {
    * @param {ParagraphData} params.data - previously saved data
    * @param {ParagraphConfig} params.config - user config for Tool
    * @param {object} params.api - editor.js api
+   * @param {boolean} readOnly - read only mode flag
    */
-  constructor({data, config, api}) {
+  constructor({data, config, api, readOnly}) {
     this.api = api;
+    this.readOnly = readOnly;
 
     this._CSS = {
       block: this.api.styles.block,
@@ -98,7 +100,10 @@ class Paragraph {
       settingsButton: this.api.styles.settingsButton,
       settingsButtonActive: this.api.styles.settingsButtonActive
     };
-    this.onKeyUp = this.onKeyUp.bind(this);
+
+    if (!this.readOnly) {
+      this.onKeyUp = this.onKeyUp.bind(this);
+    }
 
     /**
      * Placeholder for paragraph if it is first Block
@@ -146,18 +151,21 @@ class Paragraph {
     let div = document.createElement('DIV');
 
     div.classList.add(this._CSS.wrapper, this._CSS.block);
-    div.contentEditable = true;
+    div.contentEditable = false;
     div.dataset.placeholder = this.api.i18n.t(this._placeholder);
 
-    div.addEventListener('keyup', this.onKeyUp);
+    if (!this.readOnly) {
+      div.contentEditable = true;
+      div.addEventListener('keyup', this.onKeyUp);
+    }
 
     return div;
   }
 
   /**
    * Return Tool's view
+   *
    * @returns {HTMLDivElement}
-   * @public
    */
   render() {
     return this._element;
@@ -316,6 +324,15 @@ class Paragraph {
         br: true,
       }
     };
+  }
+
+  /**
+   * Returns true to notify the core that read-only mode is supported
+   *
+   * @return {boolean}
+   */
+  static get isReadOnlySupported() {
+    return true;
   }
 
   /**
