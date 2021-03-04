@@ -1,7 +1,7 @@
 {
   "name": "@editorjs/paragraph",
   "version": "2.8.0",
-  "version-tanmer": "1.0.1",
+  "tanmer-version": "1.0.1",
   "keywords": [
     "codex editor",
     "paragraph",
